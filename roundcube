@@ -1,0 +1,53 @@
+#!/bin/bash
+#/*
+# +-------------------------------------------------------------------------+
+# | RoundCube Webmail IMAP Client                                           |
+# | Version 0.3-20090814                                                    |
+# |                                                                         |
+# | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                   |
+# |                                                                         |
+# | This program is free software; you can redistribute it and/or modify    |
+# | it under the terms of the GNU General Public License version 2          |
+# | as published by the Free Software Foundation.                           |
+# |                                                                         |
+# | This program is distributed in the hope that it will be useful,         |
+# | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
+# | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+# | GNU General Public License for more details.                            |
+# |                                                                         |
+# | You should have received a copy of the GNU General Public License along |
+# | with this program; if not, write to the Free Software Foundation, Inc., |
+# | 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.             |
+# |                                                                         |
+# +-------------------------------------------------------------------------+
+# | Author: Till Klampaeckel <till@php.net>                                 |
+# +-------------------------------------------------------------------------+
+#
+# $Id$
+#
+#*/
+
+ROUNDCUBE_INSTALL=/path/to/roundcube
+
+www_dir=${ROUNDCUBE_INSTALL}/plugins
+test_dir=${ROUNDCUBE_INSTALL}/tests
+temp_dir=${ROUNDCUBE_INSTALL}/temp
+php_dir=${ROUNDCUBE_INSTALL}/plugins
+data_dir=${ROUNDCUBE_INSTALL}/plugins
+cache_dir=${ROUNDCUBE_INSTALL}/temp
+
+channel=pear.roundcube.net
+
+PEAR_TASK=$1
+PEAR_PACKAGE=$2
+VERBOSE="-vvv "
+
+PEAR_CMD="pear ${VERBOSE}-d www_dir=${www_dir} -d test_dir=${test_dir}"
+PEAR_CMD="${PEAR_CMD} -d temp_dir=${temp_dir} -d php_dir=${php_dir}"
+PEAR_CMD="${PEAR_CMD} -d data_dir=${data_dir} -d cache_dir=${cache_dir}"
+PEAR_CMD="${PEAR_CMD} -d default_channel=${channel}"
+PEAR_CMD="${PEAR_CMD} -d preferred_mirror=${channel}"
+PEAR_CMD="${PEAR_CMD} -d master_server=${channel}"
+PEAR_CMD="${PEAR_CMD} ${PEAR_TASK} ${PEAR_PACKAGE}"
+
+$PEAR_CMD
