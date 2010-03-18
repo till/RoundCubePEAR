@@ -25,6 +25,8 @@
 #
 # $Id$
 #
+# Version: 0.0.1-alpha
+#
 #*/
 
 THIS_DIR=$(pwd)
