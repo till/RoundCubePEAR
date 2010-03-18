@@ -68,4 +68,4 @@ fi
 
 PEAR_CMD="pear -c ${THIS_DIR}/roundcube.conf ${PEAR_TASK} ${PEAR_PACKAGE}"
 
-echo $PEAR_CMD
+$PEAR_CMD
