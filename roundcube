@@ -46,18 +46,25 @@ VERBOSE="-vvv "
 
 
 if [ "$PEAR_TASK" = 'setup-roundcube' ]; then
-    SETUP_CMD="pear config-create ${ROUNDCUBE_INSTALL} ${THIS_DIR}/roundcube.conf"
-    echo $SETUP_CMD
-    exit 1
-fi
 
-#PEAR_CMD="pear ${VERBOSE}-d www_dir=${www_dir} -d test_dir=${test_dir}"
-#PEAR_CMD="${PEAR_CMD} -d temp_dir=${temp_dir} -d php_dir=${php_dir}"
-#PEAR_CMD="${PEAR_CMD} -d data_dir=${data_dir} -d cache_dir=${cache_dir}"
-#PEAR_CMD="${PEAR_CMD} -d default_channel=${channel}"
-#PEAR_CMD="${PEAR_CMD} -d preferred_mirror=${channel}"
-#PEAR_CMD="${PEAR_CMD} -d master_server=${channel}"
-#PEAR_CMD="${PEAR_CMD} ${PEAR_TASK} ${PEAR_PACKAGE}"
+    SETUP_CMD="pear config-create ${ROUNDCUBE_INSTALL} ${THIS_DIR}/roundcube.conf"
+    $SETUP_CMD
+
+    pear -c ${THIS_DIR}/roundcube.conf channel-discover pear.roundcube.net
+
+    pear -c ${THIS_DIR}/roundcube.conf config-set cache_dir $cache_dir
+    pear -c ${THIS_DIR}/roundcube.conf config-set test_dir $test_dir
+    pear -c ${THIS_DIR}/roundcube.conf config-set temp_dir $temp_dir
+    pear -c ${THIS_DIR}/roundcube.conf config-set data_dir $data_dir
+    pear -c ${THIS_DIR}/roundcube.conf config-set php_dir $php_dir
+    pear -c ${THIS_DIR}/roundcube.conf config-set www_dir $www_dir
+    pear -c ${THIS_DIR}/roundcube.conf config-set default_channel $channel
+    #pear -c ${THIS_DIR}/roundcube.conf config-set preferred_mirror $channel
+    #pear -c ${THIS_DIR}/roundcube.conf config-set master_server $channel
+
+    echo "Created local PEAR config in ${THIS_DIR}/roundcube.conf."
+    exit
+fi
 
 PEAR_CMD="pear -c ${THIS_DIR}/roundcube.conf ${PEAR_TASK} ${PEAR_PACKAGE}"
 
