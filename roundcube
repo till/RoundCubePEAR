@@ -27,7 +27,9 @@
 #
 #*/
 
-ROUNDCUBE_INSTALL=/path/to/roundcube
+THIS_DIR=$(pwd)
+ROUNDCUBE_INSTALL="${THIS_DIR}/../" 
+ROUNDCUBE_INSTALL=`cd "${ROUNDCUBE_INSTALL}";pwd`
 
 www_dir=${ROUNDCUBE_INSTALL}/plugins
 test_dir=${ROUNDCUBE_INSTALL}/tests
@@ -42,12 +44,21 @@ PEAR_TASK=$1
 PEAR_PACKAGE=$2
 VERBOSE="-vvv "
 
-PEAR_CMD="pear ${VERBOSE}-d www_dir=${www_dir} -d test_dir=${test_dir}"
-PEAR_CMD="${PEAR_CMD} -d temp_dir=${temp_dir} -d php_dir=${php_dir}"
-PEAR_CMD="${PEAR_CMD} -d data_dir=${data_dir} -d cache_dir=${cache_dir}"
-PEAR_CMD="${PEAR_CMD} -d default_channel=${channel}"
-PEAR_CMD="${PEAR_CMD} -d preferred_mirror=${channel}"
-PEAR_CMD="${PEAR_CMD} -d master_server=${channel}"
-PEAR_CMD="${PEAR_CMD} ${PEAR_TASK} ${PEAR_PACKAGE}"
 
-$PEAR_CMD
+if [ "$PEAR_TASK" = 'setup-roundcube' ]; then
+    SETUP_CMD="pear config-create ${ROUNDCUBE_INSTALL} ${THIS_DIR}/roundcube.conf"
+    echo $SETUP_CMD
+    exit 1
+fi
+
+#PEAR_CMD="pear ${VERBOSE}-d www_dir=${www_dir} -d test_dir=${test_dir}"
+#PEAR_CMD="${PEAR_CMD} -d temp_dir=${temp_dir} -d php_dir=${php_dir}"
+#PEAR_CMD="${PEAR_CMD} -d data_dir=${data_dir} -d cache_dir=${cache_dir}"
+#PEAR_CMD="${PEAR_CMD} -d default_channel=${channel}"
+#PEAR_CMD="${PEAR_CMD} -d preferred_mirror=${channel}"
+#PEAR_CMD="${PEAR_CMD} -d master_server=${channel}"
+#PEAR_CMD="${PEAR_CMD} ${PEAR_TASK} ${PEAR_PACKAGE}"
+
+PEAR_CMD="pear -c ${THIS_DIR}/roundcube.conf ${PEAR_TASK} ${PEAR_PACKAGE}"
+
+echo $PEAR_CMD
